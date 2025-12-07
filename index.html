@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Developer Portfolio Structure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: none;
+            transition: background 0.5s ease;
+        }
+
+        body.light-theme {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.8);
+        }
+
+        .theme-icon {
+            font-size: 28px;
+            transition: transform 0.4s ease;
+        }
+
+        .theme-toggle:hover .theme-icon {
+            transform: rotate(180deg);
+        }
+
+        #cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        #cursor-glow {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            animation: float-particle 20s infinite;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+            animation: glow 2s ease-in-out infinite;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.5em;
+            margin-bottom: 50px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .profile-section {
+            position: sticky;
+            top: 40px;
+            animation: slideInRight 1s ease;
+        }
+
+        .profile-card {
+            background: rgba(18, 24, 56, 0.8);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .profile-card:hover::before {
+            animation: shine 1.5s ease infinite;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 80px rgba(102, 126, 234, 0.6);
+            border-color: rgba(102, 126, 234, 0.8);
+        }
+
+        .profile-image-wrapper {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 40px rgba(102, 126, 234, 0.4);
+            animation: float 3s ease-in-out infinite;
+            border: 3px solid rgba(102, 126, 234, 0.5);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.8s ease;
+            filter: grayscale(30%);
+        }
+
+        .profile-image-wrapper:hover .profile-image {
+            transform: scale(1.15) rotate(2deg);
+            filter: grayscale(0%);
+        }
+
+        .profile-name {
+            font-size: 2em;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+        }
+
+        .profile-title {
+            font-size: 1.2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .profile-social {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            position: relative;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            transition: transform 0.4s ease;
+        }
+
+        .social-icon:hover::before {
+            transform: scale(1.3);
+            opacity: 0;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-10px) scale(1.2) rotate(360deg);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.8);
+        }
+
+        .section-card {
+            background: rgba(18, 24, 56, 0.7);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideInUp 0.6s ease forwards;
+            opacity: 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        body.light-theme .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+        }
+
+        body.light-theme .section-title {
+            color: #333;
+        }
+
+        body.light-theme .section-features li {
+            color: #555;
+        }
+
+        body.light-theme .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.light-theme .profile-name {
+            color: #333;
+        }
+
+        body.light-theme .tech-stack {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.light-theme .tech-stack h2 {
+            color: #333;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .section-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .section-card:hover::before {
+            left: 100%;
+        }
+
+        .section-card:hover::after {
+            opacity: 1;
+        }
+
+        .section-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 80px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(18, 24, 56, 0.9);
+        }
+
+        .section-card:nth-child(1) { animation-delay: 0.1s; }
+        .section-card:nth-child(2) { animation-delay: 0.2s; }
+        .section-card:nth-child(3) { animation-delay: 0.3s; }
+        .section-card:nth-child(4) { animation-delay: 0.4s; }
+        .section-card:nth-child(5) { animation-delay: 0.5s; }
+        .section-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .section-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        .section-card:hover .section-icon {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.8);
+        }
+
+        .section-title {
+            font-size: 1.9em;
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
+        }
+
+        .section-features {
+            list-style: none;
+        }
+
+        .section-features li {
+            padding: 15px 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.4s ease;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .section-features li::before {
+            content: '\2192';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            font-size: 1.3em;
+        }
+
+        .section-features li:hover {
+            padding-left: 45px;
+            color: #667eea;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.6);
+            transform: translateX(5px);
+        }
+
+        .section-features li:hover::before {
+            transform: translateX(10px) scale(1.3);
+            text-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+        }
+
+        .section-features li:last-child {
+            border-bottom: none;
+        }
+
+        .tech-stack {
+            background: rgba(18, 24, 56, 0.8);
+            border-radius: 25px;
+            padding: 45px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            animation: slideInUp 0.6s ease 0.7s forwards;
+            opacity: 0;
+            grid-column: 1 / -1;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-stack:hover {
+            box-shadow: 0 20px 80px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.6);
+        }
+
+        .tech-stack h2 {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 35px;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-tag::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+
+        .tech-tag:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .tech-tag:hover {
+            transform: scale(1.15) translateY(-5px) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.8);
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(102, 126, 234, 0.5), 0 0 40px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 0 0 60px rgba(102, 126, 234, 0.5);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                transform: translateY(50px);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                top: -50%;
+                left: -50%;
+            }
+            100% {
+                top: 150%;
+                left: 150%;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-section {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor"></div>
+    <div id="cursor-glow"></div>
+    
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="theme-toggle" id="themeToggle">
+            <span class="theme-icon">🌙</span>
+        </div>
+        
+        <h1>🚀 Web Developer | Shoaib Khan </h1>
+        <p class="subtitle">Animated & Interactive Website Structure</p>
+
+        <div class="main-layout">
+            <div class="content-section">
+                <div class="sections-grid">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">🏠</div>
+                            <h2 class="section-title">Hero Section</h2>
+                        </div>
+                        <ul class="section-features">
+                            <li>SHOAIB JAMALI</li>
+                            <li>Dynamic typing effect tagline</li>
+                            <li>Particle background animation</li>
+                            <li>Scroll indicator</li>
+                            <li>CTA buttons with hover effects</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">👨‍💻</div>
+                            <h2 class="section-title">About Me</h2>
+                        </div>
+                        <ul class="section-features">
+                            <li>Animated profile image</li>
+                            <li>Skills progress bars</li>
+                            <li>Interactive tech stack icons</li>
+                            <li>Fade-in text animations</li>
+                            <li>Download resume button</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">💼</div>
+                            <h2 class="section-title">Projects Showcase</h2>
+                        </div>
+                        <ul class="section-features">
+                            <li>Filterable project grid</li>
+                            <li>Hover zoom effects</li>
+                            <li>Modal/lightbox for details</li>
+                            <li>Live demo & GitHub links</li>
+                            <li>Tech stack tags</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">⚡</div>
+                            <h2 class="section-title">Skills & Expertise</h2>
+                        </div>
+                        <ul class="section-features">
+                            <li>Animated skill cards</li>
+                            <li>Circular progress indicators</li>
+                            <li>Icon animations on scroll</li>
+                            <li>Category filters</li>
+                            <li>Tooltip descriptions</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">📧</div>
+                            <h2 class="section-title">Contact Form</h2>
+                        </div>
+                        <ul class="section-features">
+                            <li>Animated input fields</li>
+                            <li>Form validation effects</li>
+                            <li>Success/error animations</li>
+                            <li>Social media hover effects</li>
+                            <li>Email integration</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-icon">🌐</div>
+                            <h2 class="section-title">Global Features</h2>
+                        </div>
+                        <ul class="section-features">
+                            <li>Smooth scroll animations</li>
+                            <li>Parallax effects</li>
+                            <li>Dark/Light theme toggle</li>
+                            <li>Animated navigation</li>
+                            <li>Loading screen animation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tech-stack">
+                    <h2>🛠️ Recommended Tech Stack</h2>
+                    <div class="tech-tags">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">GSAP</span>
+                        <span class="tech-tag">Three.js</span>
+                        <span class="tech-tag">Framer Motion</span>
+                        <span class="tech-tag">Tailwind CSS</span>
+                        <span class="tech-tag">AOS Library</span>
+                        <span class="tech-tag">Particles.js</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-card">
+                    <div class="profile-image-wrapper">
+                        <img src="image.jpg" alt="Profile" class="profile-image">
+                    </div>
+                    <h3 class="profile-name">Your Name</h3>
+                    <p class="profile-title">Web Developer</p>
+                    <div class="profile-social">
+                        <div class="social-icon">💼</div>
+                        <div class="social-icon">🐙</div>
+                        <div class="social-icon">🔗</div>
+                        <div class="social-icon">📧</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        let isDark = true;
+
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            document.body.classList.toggle('light-theme');
+            themeIcon.textContent = isDark ? '🌙' : '☀️';
+        });
+
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        const cursorGlow = document.getElementById('cursor-glow');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Magnetic effect on cards
+        const cards = document.querySelectorAll('.section-card, .profile-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const moveX = (x - centerX) / 10;
+                const moveY = (y - centerY) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateY(${moveX}deg) rotateX(${-moveY}deg) translateY(-15px) scale(1.03)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Hover glow effect on cursor
+        const interactiveElements = document.querySelectorAll('.social-icon, .tech-tag, .section-features li, .theme-toggle');
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+                cursor.style.borderColor = '#764ba2';
+                cursorGlow.style.transform = 'translate(-50%, -50%) scale(2)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.borderColor = '#667eea';
+                cursorGlow.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
