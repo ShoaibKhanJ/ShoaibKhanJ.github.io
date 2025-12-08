@@ -616,7 +616,7 @@
             <span class="theme-icon">🌙</span>
         </div>
         
-        <h1>🚀 Web Developer | Shoaib Khan </h1>
+        <h1> Web Developer & Front-end Programmer </h1>
         <p class="subtitle">Animated & Interactive Website Structure</p>
 
         <div class="main-layout">
@@ -628,7 +628,7 @@
                             <h2 class="section-title">Hero Section</h2>
                         </div>
                         <ul class="section-features">
-                            <li>SHOAIB JAMALI</li>
+                            <li>Animated name reveal</li>
                             <li>Dynamic typing effect tagline</li>
                             <li>Particle background animation</li>
                             <li>Scroll indicator</li>
@@ -729,14 +729,15 @@
                     <div class="profile-image-wrapper">
                         <img src="image.jpg" alt="Profile" class="profile-image"/>
                     </div>
-                    <h3 class="profile-name">Your Name</h3>
+                    <h3 class="profile-name"> Shoaib Khan </h3>
                     <p class="profile-title">Web Developer</p>
                     <div class="profile-social">
-                        <div class="social-icon">💼</div>
-                        <div class="social-icon">🐙</div>
-                        <div class="social-icon">🔗</div>
-                        <div class="social-icon">📧</div>
-                    </div>
+
+                        <a href="SocialMedia.html" target="_blank" class="social-icon"> </a>
+                        <a href="https://github.com/ShoaibKhanJ" class="social-icon">🐙</a>
+                        <a href="https://www.linkedin.com/in/shoaib-k-978b6b271/" class="social-icon">🔗</a>
+                        <a href="mailto:shoaibkhan.network@gmail.com" class="social-icon">📧</a>
+                        </div>
                 </div>
             </div>
         </div>
@@ -754,9 +755,10 @@
             themeIcon.textContent = isDark ? '🌙' : '☀️';
         });
 
-        // Custom cursor
+        
+        // Custom cursor //
         const cursor = document.getElementById('cursor');
-        const cursorGlow = document.getElementById('cursor-glow');
+        const cursorGlow = document.getElementById('cursor-glow');  
         
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
@@ -765,6 +767,10 @@
             cursorGlow.style.top = e.clientY + 'px';
         });
 
+
+
+        
+       
         // Particle system
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 50; i++) {
@@ -814,7 +820,26 @@
             });
         });
     </script>
+
+    <script>
+    // 1. Get references to the custom cursor elements
+    const cursor = document.getElementById('cursor');
+    const cursorGlow = document.getElementById('cursor-glow');
+
+    // 2. Add an event listener for mouse movement
+    document.addEventListener('mousemove', e => {
+        // e.clientX and e.clientY provide the current mouse position
+
+        // A. Move the primary cursor (The movement will be smoothed by the CSS transition)
+        // We use template literals to apply the position via CSS 'transform'
+        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+        
+        // B. Move the glow/trail cursor (It should lag slightly behind for a better effect)
+        // Note: For a smoother lag, you can intentionally set a longer transition 
+        // on the glow in your CSS (which you already did: 0.15s vs 0.1s).
+        cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    });
+</script>
 </body>
 
 </html>
-
