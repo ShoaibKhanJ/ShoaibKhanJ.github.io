@@ -132,14 +132,14 @@
 
         .main-layout {
             display: grid;
-            grid-template-columns: 0.9fr 400px;
+            grid-template-columns: 1fr 400px;
             gap: 40px;
             align-items: start;
         }
 
         .sections-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 0.9fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             margin-bottom: 50px;
         }
@@ -591,7 +591,7 @@
 
         @media (max-width: 1200px) {
             .main-layout {
-                grid-template-columns: 0.9fr;
+                grid-template-columns: 1fr;
             }
             
             .profile-section {
@@ -833,6 +833,7 @@
 </body>
 
 </html>
+
 
 
 
